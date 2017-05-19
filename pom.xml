@@ -2,19 +2,57 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
-
-  <groupId>org.apache.camel</groupId>
+  
+  <groupId>com.github.johnpoth</groupId>
   <artifactId>camel-fhir</artifactId>
-  <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.1-SNAPSHOT</version>
+  <packaging>bundle</packaging>
+  <name>Camel :: Fhir</name>
+  <description>Camel Fhir Component</description>
 
-  <name>Camel fhir Component</name>
+  <url>https://github.com/johnpoth/camel-fhir</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <hapi-fhir-version>2.3</hapi-fhir-version>
+    <hapi-fhir-version>2.4</hapi-fhir-version>
+    <hapi-version>2.2</hapi-version>
   </properties>
+
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <url>https://github.com/johnpoth/camel-fhir.git</url>
+    <connection>scm:git:https://github.com/johnpoth/camel-fhir.git</connection>
+    <developerConnection>scm:git:https://johnpoth@github.com/johnpoth/camel-fhir.git</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+
+  <developers>
+    <developer>
+      <id>johnpoth</id>
+      <name>John Poth</name>
+      <email>poth dot john at gmail dot com</email>
+      <timezone>+1</timezone>
+    </developer>
+  </developers>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
 
   <dependencyManagement>
     <dependencies>
@@ -22,7 +60,7 @@
       <dependency>
         <groupId>org.apache.camel</groupId>
         <artifactId>camel-parent</artifactId>
-        <version>2.18.3</version>
+        <version>2.19.0</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
@@ -34,6 +72,12 @@
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-core</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>ca.uhn.hapi.fhir</groupId>
+      <artifactId>hapi-fhir-base</artifactId>
+      <version>${hapi-fhir-version}</version>
+    </dependency>
     
     <!-- support camel documentation -->
     <dependency>
@@ -41,7 +85,49 @@
       <artifactId>apt</artifactId>
       <version>2.18.3</version>
     </dependency>
-    
+
+    <!-- testing -->
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-hl7</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ca.uhn.hapi</groupId>
+      <artifactId>hapi-structures-v24</artifactId>
+      <version>${hapi-version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ca.uhn.hapi.fhir</groupId>
+      <artifactId>restful-server-example</artifactId>
+      <type>war</type>
+      <version>2.4</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ca.uhn.hapi.fhir</groupId>
+      <artifactId>hapi-fhir-structures-dstu3</artifactId>
+      <version>${hapi-fhir-version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ca.uhn.hapi.fhir</groupId>
+      <artifactId>hapi-fhir-structures-dstu2</artifactId>
+      <version>${hapi-fhir-version}</version>
+      <scope>test</scope>
+    </dependency>
+
     <!-- logging -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
@@ -59,37 +145,13 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- testing -->
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>ca.uhn.hapi.fhir</groupId>
-      <artifactId>hapi-fhir-base</artifactId>
-      <version>${hapi-fhir-version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>ca.uhn.hapi.fhir</groupId>
-      <artifactId>hapi-fhir-structures-dstu3</artifactId>
-      <version>${hapi-fhir-version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>ca.uhn.hapi.fhir</groupId>
-      <artifactId>hapi-fhir-structures-dstu2</artifactId>
-      <version>${hapi-fhir-version}</version>
-      <scope>test</scope>
-    </dependency>
     <!--<dependency>-->
       <!--<groupId>ch.qos.logback</groupId>-->
       <!--<artifactId>logback-classic</artifactId>-->
       <!--<optional>true</optional>-->
     <!--</dependency>-->
+    
+    <!--FHIR Rest Server for testing-->
     <!--TODO:replace with undertow-->
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
@@ -185,45 +247,32 @@
         </configuration>
       </plugin>
 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.10</version>
+        <executions>
+          <execution>
+            <id>copy</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>ca.uhn.hapi.fhir</groupId>
+                   <artifactId>restful-server-example</artifactId>
+                  <type>war</type>
+                  <overWrite>false</overWrite>
+                  <outputDirectory>${project.basedir}/target</outputDirectory>
+                </artifactItem>
+              </artifactItems>
+              <stripVersion>true</stripVersion>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
-  <profiles>
-    <profile>
-      <id>fhir-itests</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <version>2.10</version>
-            <executions>
-              <execution>
-                <id>unpack-server</id>
-                <phase>generate-test-resources</phase>
-                <goals>
-                  <goal>copy</goal>
-                </goals>
-                <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>ca.uhn.hapi.fhir</groupId>
-                      <artifactId>restful-server-example</artifactId>
-                      <version>2.3</version>
-                      <type>war</type>
-                      <outputDirectory>${project.build.directory}/fhir-simple-server/</outputDirectory>
-                    </artifactItem>
-                  </artifactItems>
-                  <stripVersion>true</stripVersion>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-
 </project>

@@ -3,10 +3,9 @@ package org.apache.camel.component.fhir;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import ca.uhn.fhir.context.FhirContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.component.fhir.FhirContextsHolder;
-import org.apache.camel.component.fhir.FhirJsonDataFormat;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.junit4.CamelTestSupport;
 import org.hl7.fhir.dstu3.model.Address;
@@ -46,7 +45,7 @@ public class FhirJsonDataFormatTest extends CamelTestSupport {
         mockEndpoint.expectedMessageCount(1);
         Exchange exchange = mockEndpoint.getExchanges().get(0);
         InputStream inputStream = exchange.getIn().getBody(InputStream.class);
-        IBaseResource iBaseResource = FhirContextsHolder.getDstu3FhirContext().newJsonParser().parseResource(new InputStreamReader(inputStream));
+        IBaseResource iBaseResource = FhirContext.forDstu3().newJsonParser().parseResource(new InputStreamReader(inputStream));
         assertTrue("Patients should be equal!", patient.equalsDeep((Base) iBaseResource));
     }
 
@@ -60,7 +59,7 @@ public class FhirJsonDataFormatTest extends CamelTestSupport {
         return new RouteBuilder() {
             public void configure() {
 
-                final FhirJsonDataFormat fhirJsonDataFormat = new FhirJsonDataFormat();
+                final FhirJsonDataFormat fhirJsonDataFormat = new FhirJsonDataFormat(FhirContext.forDstu3());
 
                 from("direct:marshal")
                     .marshal(fhirJsonDataFormat)
