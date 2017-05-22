@@ -5,7 +5,7 @@
   
   <groupId>com.github.johnpoth</groupId>
   <artifactId>camel-fhir</artifactId>
-  <version>0.1</version>
+  <version>0.2-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>Camel :: Fhir</name>
   <description>Camel Fhir Component</description>
@@ -31,7 +31,7 @@
     <url>https://github.com/johnpoth/camel-fhir.git</url>
     <connection>scm:git:https://github.com/johnpoth/camel-fhir.git</connection>
     <developerConnection>scm:git:https://johnpoth@github.com/johnpoth/camel-fhir.git</developerConnection>
-    <tag>camel-fhir-0.1</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <developers>
